@@ -1,0 +1,415 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-image: linear-gradient(to right, #181818ef, #000000f1);
+  color: white;
+  width: 99.1%;
+}
+
+.header {
+
+  height: 100vh;
+}
+
+.cta {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+#me {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 14px;
+  width: 294px;
+  height: 403px;
+
+}
+
+#contact_me {
+  color: black;
+}
+
+@media (max-width: 576px) {
+
+  #me {
+    height: 70% !important;
+    width: 70% !important;
+  }
+
+  #about_me {
+
+
+    width: 150% !important;
+    height: 100%;
+
+
+  }
+
+
+  #about_me-flex {
+    flex-direction: column;
+    align-items: cneter;
+  }
+
+  #about_me {
+    width: 150% !important;
+    margin: auto;
+    left: 25%;
+    position: relative;
+  }
+
+  .about_details {
+    width: 223%;
+
+  }
+
+  h5.contact_details_head {
+    font-size: 17px !important;
+  }
+
+  #contact_details_child {
+    font-size: 17px !important;
+  }
+
+  #Edu_head {
+    margin-top: 9rem !important;
+    padding-top: 3rem;
+  }
+
+  #edu_mobile {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  #edu_png {
+    display: none;
+  }
+
+  #Edu_head {
+    font-size: 40px;
+  }
+
+  .icons {
+    background: #1a1a1a !important;
+    padding: 5px 0px 0 10px !important;
+    border-radius: 49% !important;
+    width: 4.5rem !important;
+    height: 3.5rem !important;
+  }
+
+  #About_head_mobile {
+    font-size: 40px;
+  }
+
+  #Skills_mobile {
+    flex-direction: column !important;
+
+  }
+
+  #width_mobile {
+    width: 100% !important;
+  }
+
+  #mobile_project {
+    flex-direction: column;
+  }
+
+  #project_col_mobile.col-6 {
+    width: 95% !important;
+  }
+  #projects{
+    margin-top: 250px;
+  }
+  #contact_row{
+    flex-direction: column;
+    align-items: center;
+  }
+  #contact_ways{
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #Contact_title{
+    margin-top: 20rem !important;
+    top: 5rem !important;
+    position: relative;
+  }
+  #alert{
+    position: absolute;
+    width: 19rem;
+    height: 3.1rem;
+    left: 15%;
+    
+    transform: translateX(-50%);
+  }
+  #footer{
+    margin-top:12rem ;
+  }
+}
+
+
+section {
+  height: 100vh;
+}
+
+nav {
+  background: #00000034;
+  color: white !important;
+  width: max-content;
+  padding: 0px 13px 0 10px ;
+  z-index: 2;
+  position: fixed;
+  left: 49%;
+  transform: translateX(-48%);
+  display: flex;
+  gap: 0.8rem;
+  border-radius: 3rem;
+  bottom: 2rem;
+  backdrop-filter: blur(15px);
+}
+#home{
+  height:100vh;
+  margin-top: -48px;
+  padding-top:2rem;
+}
+nav a {
+  color: white;
+  background: transparent;
+  padding: 0.8rem;
+  font-size: 15px;
+  font-weight: 900;
+
+}
+
+ul{
+  margin-top: 15px;
+  padding: 0 !important;
+}
+nav a:hover {
+  background: rgba(0, 0, 0, 0.63);
+  border-radius: 44%;
+}
+
+nav a.active {
+  background: rgba(0, 0, 0, 0.63);
+  color: rgb(0, 255, 85);
+  border-radius: 44%;
+}
+
+.social_me {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: green;
+  align-content: center;
+  width: fit-content;
+  position: relative;
+  flex-wrap: wrap;
+ 
+}
+
+.social_me::after {
+  content: "";
+  width: 3px;
+  height: 2rem;
+  background: #0a58ca;
+}
+
+.social_me::before {
+  content: "";
+  width: 3px;
+  height: 2rem;
+  background: #0a58ca;
+}
+
+
+
+#about_me {
+
+  border-radius: 1.5rem;
+  overflow: hidden;
+  transform: rotate(10deg);
+  width: 50%;
+  transition: ease-out 0.5s;
+}
+
+#about_me:hover {
+  transform: rotate(0);
+
+}
+
+.dev_course:hover {
+  background-color: #afe9f311;
+}
+
+.inter_course:hover {
+  background-color: #afe9f311;
+}
+
+.college_course:hover {
+  background-color: #afe9f311;
+}
+
+.icons {
+  background: #1a1a1a;
+  padding: 0px 0px 0 10px;
+  border-radius: 50%;
+  width: 4rem;
+  height: 4rem;
+}
+
+.dev_course,
+.inter_course,
+.college_course {
+  padding: 20px;
+  border-radius: 23px;
+  gap: 0.6rem;
+}
+
+#Edu_head,
+#Skills_head,
+#projects {
+  top: 3rem;
+  position: relative;
+}
+section#projects{
+  height: 200vh !important;
+}
+#skills_gap {
+  gap: 0.3rem;
+}
+
+.frontent_dev {
+  background: #afe9f311;
+  padding: 3rem;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.skills_icons {
+  color: #0a58ca;
+}
+
+#frontend_head {
+  color: rgba(0, 255, 255, 0.596);
+}
+
+.frontent_dev:hover {
+  background: transparent;
+  border: 0.5px solid white;
+}
+
+/* 
+.project_ladning{
+
+  width: 50%;
+} */
+
+#desktop_version {
+  color: rgba(0, 255, 255, 0.596);
+}
+
+
+#project_col_mobile {
+  border: 0.1px solid white;
+  border-radius: 31px;
+  padding: 18px;
+  margin: 0.8rem;
+  width: 47% !important;
+}
+
+
+#sello_title{
+  margin-top: 2rem;
+  background: #afe9f311;
+  padding: 14px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 1s;
+
+}
+#sello_title:hover{
+  background: transparent !important;
+  border: 0.2px solid white;
+}
+
+.form-control{
+  background-color: transparent;
+  border: 0.2px solid #afe9f34d;
+  padding:0.5rem;
+  color: white;
+  
+}
+.form-control:focus{
+  border: 1px solid white;
+  outline: none;
+  background-color: transparent;
+  color: white;
+}
+
+
+.Email{
+  background-color: #afe9f311;
+  width: 14rem;
+ 
+  border-radius: 20px;
+  padding: 8px;
+  transition: 0.5s;
+  margin-bottom: 1rem;
+}
+.Email:hover{
+  background-color: transparent !important;
+  border: 0.5px solid rgba(255, 255, 255, 0.774);
+}
+.title_contact{
+  font-size: 1.2rem;
+}
+
+.email.address{
+  font-size: 1rem;
+}
+.send_message{
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+.projects_details_title{
+  color: rgba(0, 255, 255, 0.596);
+}
+.project_details{
+  margin-top: 1rem;
+}
+
+
+
+#Contact_title{
+  margin-top: 400px !important;
+  top: 3rem;
+  position: relative;
+}
+#alert{
+  position: absolute;
+  width: 19rem;
+  height: 3.1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#footer{
+  margin-bottom:5rem ;
+}
