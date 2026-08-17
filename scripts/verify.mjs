@@ -133,6 +133,7 @@ for (const file of [
   'fonts/inter-latin-var.woff2',
   'Tufail-Akram-Resume.pdf',
   '_redirects',
+  '_headers',
 ]) {
   fs.existsSync(path.join(dist, file)) ? ok(`dist/${file}`) : fail(`dist/${file} is missing`);
 }

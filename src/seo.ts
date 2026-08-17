@@ -116,6 +116,48 @@ export function renderHead(): string {
   ].join('\n    ');
 }
 
+/**
+ * Netlify `_headers`, emitted into dist/ rather than declared in netlify.toml.
+ *
+ * netlify.toml is only read from the repo root, so a manual drag-and-drop deploy of
+ * dist/ would silently ship without any of these. A `_headers` file lives inside the
+ * published folder, so it applies to both manual uploads and git-triggered builds.
+ */
+export function renderHeaders(): string {
+  return [
+    '/*',
+    '  X-Content-Type-Options: nosniff',
+    '  X-Frame-Options: DENY',
+    '  Referrer-Policy: strict-origin-when-cross-origin',
+    '  Permissions-Policy: camera=(), microphone=(), geolocation=()',
+    '',
+    '# Vite hashes these filenames, so they can never go stale.',
+    '/assets/*',
+    '  Cache-Control: public, max-age=31536000, immutable',
+    '',
+    '# Unhashed, but replaced rarely.',
+    '/fonts/*',
+    '  Cache-Control: public, max-age=604800',
+    '',
+    '/*.png',
+    '  Cache-Control: public, max-age=86400',
+    '',
+    '/*.webp',
+    '  Cache-Control: public, max-age=86400',
+    '',
+    '/*.jpg',
+    '  Cache-Control: public, max-age=86400',
+    '',
+    '/*.svg',
+    '  Cache-Control: public, max-age=86400',
+    '',
+    '# Swapped whenever the CV is updated.',
+    '/Tufail-Akram-Resume.pdf',
+    '  Cache-Control: public, max-age=3600',
+    '',
+  ].join('\n');
+}
+
 export function renderRobots(): string {
   return ['User-agent: *', 'Allow: /', '', `Sitemap: ${origin}/sitemap.xml`, ''].join('\n');
 }

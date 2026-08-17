@@ -1,6 +1,12 @@
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
-import { renderHead, renderRobots, renderSitemap, renderWebmanifest } from './src/seo';
+import {
+  renderHead,
+  renderHeaders,
+  renderRobots,
+  renderSitemap,
+  renderWebmanifest,
+} from './src/seo';
 
 /**
  * Injects the generated <head> into index.html (dev and build alike) and emits
@@ -18,6 +24,7 @@ function seo(): Plugin {
       handler: (html) => html.replace('<!--app-head-->', renderHead()),
     },
     generateBundle() {
+      this.emitFile({ type: 'asset', fileName: '_headers', source: renderHeaders() });
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: renderRobots() });
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: renderSitemap() });
       this.emitFile({ type: 'asset', fileName: 'site.webmanifest', source: renderWebmanifest() });

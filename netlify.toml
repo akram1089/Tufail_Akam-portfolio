@@ -5,37 +5,9 @@
 [build.environment]
   NODE_VERSION = "20"
 
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Content-Type-Options = "nosniff"
-    X-Frame-Options = "DENY"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-
-# Hashed filenames — safe to cache forever.
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# Unhashed public assets — revalidate, but allow a short cache.
-[[headers]]
-  for = "/*.png"
-  [headers.values]
-    Cache-Control = "public, max-age=86400"
-
-[[headers]]
-  for = "/*.webp"
-  [headers.values]
-    Cache-Control = "public, max-age=86400"
-
-[[headers]]
-  for = "/*.jpg"
-  [headers.values]
-    Cache-Control = "public, max-age=86400"
-
-[[headers]]
-  for = "/Tufail-Akram-Resume.pdf"
-  [headers.values]
-    Cache-Control = "public, max-age=3600"
+# Header rules deliberately live in dist/_headers, not here.
+#
+# netlify.toml is only read from the repo root, so a manual drag-and-drop deploy of
+# the dist/ folder would ship without any of them. The `_headers` file is generated
+# into dist/ by the portfolio-seo plugin in vite.config.ts (source: src/seo.ts), so
+# the same rules apply whether the site is uploaded by hand or built from git.
