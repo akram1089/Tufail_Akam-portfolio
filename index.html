@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--app-head-->
+    <script>
+      // Dark navy is the default. Light is an explicit opt-in via the dock toggle,
+      // applied before first paint so there is no flash.
+      try {
+        if (localStorage.getItem('theme') === 'light') {
+          document.documentElement.classList.add('light');
+        }
+      } catch (e) {}
+    </script>
+    <!--
+      Analytics (Phase 5.6) is deliberately not installed: the page currently makes
+      zero third-party requests, and none of these need a cookie banner. Pick one,
+      create the site, then paste its snippet here:
+
+      <script defer data-domain="YOUR-DOMAIN" src="https://plausible.io/js/script.js"></script>
+      <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-ID"></script>
+
+      Netlify Analytics is server-side and needs no snippet at all.
+    -->
+  </head>
+  <body>
+    <div id="root"><!--app-html--></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+# Short link for the CV.
+/resume    /Tufail-Akram-Resume.pdf    302
+/cv        /Tufail-Akram-Resume.pdf    302
+
+# When the custom domain is live, set it as Netlify's primary domain and
+# uncomment this so the netlify.app subdomain stops competing for the same
+# content in search results. Also update SITE.url in src/data/site.ts.
+# https://tufailakram-portfolio.netlify.app/*  https://tufailakram.dev/:splat  301!

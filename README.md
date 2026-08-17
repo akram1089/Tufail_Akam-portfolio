@@ -1,76 +1,120 @@
----- PREVIEW ----
-https://tufailakram-portfolio.netlify.app/
+# tufail-akram-portfolio
 
-PLease check the above link for live preview
+One-page portfolio. React 18 + Vite + Tailwind, **prerendered to static HTML** at build
+time so the whole page is readable without JavaScript.
 
+## Commands
 
-# Getting Started with Create React App
+```bash
+npm install
+npm run dev       # dev server (empty #root, client-rendered)
+npm run build     # client build → SSR build → prerender → dist/
+npm run verify    # 53 checks against dist/ — exits non-zero on failure
+npm run images    # regenerate public/ images (needs Python + Pillow)
+npm run lint
+npm run preview   # serve dist/ locally on :4173
+```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## How the prerender works
 
-## Available Scripts
+`npm run build` runs three steps:
 
-In the project directory, you can run:
+1. `vite build` — client bundle plus `dist/index.html`, still holding
+   `<div id="root"><!--app-html--></div>`.
+2. `vite build --ssr src/entry-server.tsx` — the same components compiled for Node,
+   into `dist/server/`.
+3. `scripts/prerender.mjs` — calls `render()`, injects the HTML into the placeholder,
+   inlines the stylesheet, then deletes `dist/server/`.
 
-### `npm start`
+`src/main.tsx` calls `hydrateRoot` when `#root` already has children and `createRoot`
+when it doesn't, so dev and production both work from one entry point. The build fails
+loudly rather than shipping a broken page: `prerender.mjs` throws if the rendered output
+has no `<h1>` or the placeholder is missing.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Entrance animations are CSS-only and time-based — never gated on JavaScript or
+IntersectionObserver — so prerendered text is readable with JS off and by crawlers.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Where things live
 
-### `npm test`
+| What | File |
+|---|---|
+| Name, role, URL, email, socials, image paths | `src/data/site.ts` |
+| Every word on the page | `src/data/content.ts` |
+| `<head>`, JSON-LD, robots.txt, sitemap.xml, webmanifest | `src/seo.ts` |
+| Colours, type scale, motion | `src/index.css`, `tailwind.config.js` |
+| Constellation background (canvas) | `src/components/ParticleBackground.tsx` |
+| Floating navigation | `src/components/Dock.tsx` |
+| Facts still needed from Tufail | `content/FACTS.md` |
+| Copy as it was before the rewrite | `content/current-copy.md` |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Changing the domain is a one-line edit**: `SITE.url` in `src/data/site.ts`. Canonical,
+OG tags, Twitter tags, JSON-LD, `robots.txt` and `sitemap.xml` are all generated from it
+by the `portfolio-seo` plugin in `vite.config.ts` — which also injects the whole `<head>`
+into `index.html` in dev and in build.
 
-### `npm run build`
+## Design system
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Charcoal and one amber. No gradients anywhere.** The blue→purple gradient this
+replaced is the default palette of every AI-generated portfolio, and the audit doc
+banned it outright ("no purple-blue gradients, no glassmorphism cards, no neon glow").
+What went with it: gradient text, gradient-filled pills, the translucent `backdrop-blur`
+cards, and the glow behind the portrait. Surfaces are solid; the accent is the only
+colour on the page.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The accent appears on exactly six things — links, the active dock item, the primary
+button, the rule under each section title, list markers, and the full stop after the
+name. Icon tiles and project tags use `.accent-soft` (10% tint + 25% border) so they
+read as quiet, not as six more buttons.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Changing the accent is a two-line edit**: `--accent` under `:root` and under `.light`
+in `src/index.css`. Both values are needed — `#E0A03C` is 8.2:1 on charcoal but only
+1.9:1 on paper, so the light theme uses a darker amber (`#9A6212`, 4.8:1).
 
-### `npm run eject`
+| | charcoal (default) | paper (`.light`) |
+|---|---|---|
+| page | `#121110` | `#FAF8F4` |
+| card | `#1E1C1A` | `#FFFFFF` |
+| text | `#EDEAE4` — 15.7:1 | `#1A1815` — 15.2:1 |
+| muted | `#A39E94` — 7.1:1 | `#6B6459` — 5.5:1 |
+| accent | `#E0A03C` — 8.2:1 | `#9A6212` — 4.8:1 |
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Dark is the default; light is an explicit opt-in stored in `localStorage` and applied by
+an inline script before first paint, so there is no flash. Both themes are driven by CSS
+variables on `:root` / `.light` — components never use `dark:` variants.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Inter is self-hosted (one variable file, latin subset, 48 kB, preloaded), so the page
+makes **zero third-party requests**.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+The constellation canvas is decoration: `aria-hidden`, started on `requestIdleCallback`
+so it never competes with hydration, paused when the tab is hidden, capped at 55
+particles and DPR 2, and reduced to a single static frame under
+`prefers-reduced-motion`.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Measured (Lighthouse 13, mobile, local preview of `dist/`)
 
-## Learn More
+| | Performance | Accessibility | Best practices | SEO |
+|---|---|---|---|---|
+| live site, before | 68 | 94 | 77 | 100 |
+| this build | **96–100** | **100** | **100** | **100** |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+FCP 1.1–1.3 s · LCP 1.8–2.0 s · CLS 0 · TBT 10–130 ms · 137 kB total · 0 third-party
+requests. Performance swings run to run on a busy machine (96, 97, 100, 100 across four
+local runs); the other three categories were 100 every time.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Full report: `lighthouse-after.report.html`. Re-run with:
 
-### Code Splitting
+```bash
+npm run build && npm run preview &
+npx lighthouse http://localhost:4173/ --output=html --output-path=./lighthouse-after \
+  --only-categories=performance,seo,accessibility,best-practices --chrome-flags="--headless=new"
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Deploying
 
-### Analyzing the Bundle Size
+Netlify builds with `netlify.toml` (`npm run build` → publish `dist`). Security and cache
+headers are set there; `public/_redirects` holds the `/resume` and `/cv` short links plus
+the commented-out 301 to use once a custom domain is live.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+After deploying, check **View Source** in the browser — the hero `<h1>`, every section
+`<h2>`, all project copy and the contact links must be visible there, not only in the
+inspector.
